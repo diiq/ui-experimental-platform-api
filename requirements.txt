@@ -1,0 +1,31 @@
+# Server
+Flask==0.10.1
+honcho
+gunicorn
+
+# Database
+SQLAlchemy==0.9.8
+psycopg2
+Flask-SQLAlchemy==2.0
+alembic==0.7.4
+
+# Utilities
+Flask-Admin
+Flask-Restful==0.3
+pytz
+pyyaml
+requests==2.5.0
+itsdangerous
+flask-cors==1.9.0
+decorator
+python-dateutil
+
+# Development
+Flask-Script
+ipython
+fabric
+Flask-Failsafe
+
+# Testing
+Flask-Testing
+mock

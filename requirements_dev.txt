@@ -1,0 +1,7 @@
+# Testing
+
+nose
+rednose
+MacFSEvents
+sniffer
+flake8

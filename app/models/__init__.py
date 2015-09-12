@@ -1,4 +1,4 @@
-from ticket import Ticket
+from user import User
 
 import inspect
 import sys

@@ -6,9 +6,8 @@ import itsdangerous
 
 from app import app
 from app.db import db
-from app.flask_app import cache
+from app.models import User
 from mock_data.seeds import plant_seed_file_relative
-from lib.stormpath_client import stormpath
 
 
 class TestCase(TC):
@@ -23,9 +22,6 @@ class TestCase(TC):
         return app
 
     def setUp(self):
-        stormpath.delete_all_accounts()
-        stormpath.delete_all_groups()
-        cache.clear()
         db.create_all()
         self.seed()
 
@@ -66,7 +62,7 @@ class TestCase(TC):
                 plant_seed_file_relative(seed_file)
 
     def login(self):
-        if not User.get_by_email("sam@example.com"):
+        if not User.filter_by(email="sam@example.com"):
             plant_seed_file_relative("login_seeds.yaml")
         self.json_post("api/v1/auth",
                        email="sam@example.com",

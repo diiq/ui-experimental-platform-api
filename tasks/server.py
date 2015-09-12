@@ -1,5 +1,5 @@
 from flask_failsafe import failsafe
-from fabric.api import task, local
+from fabric.api import task
 
 
 @failsafe

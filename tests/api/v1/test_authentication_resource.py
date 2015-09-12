@@ -47,3 +47,10 @@ class AuthenticationResourseTests(TestCase):
         self.login()
         response = self.client.get("api/v1/auth/me")
         self.assertEqual(response.json['email'], "sam@example.com")
+
+    def test_auth_token(self):
+        token = self.user().authentication_token
+        response = self.client.get(
+            "api/v1/auth/me",
+            query_string={'auth': token})
+        self.assertEqual(response.json['email'], "sam@example.com")

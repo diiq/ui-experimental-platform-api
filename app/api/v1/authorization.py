@@ -10,7 +10,7 @@ def current_user():
         if not token:
             return
 
-        user = User.query.filter_by(token=token).first()
+        user = User.query.filter_by(authentication_token=token).first()
         if not user:
             return
 

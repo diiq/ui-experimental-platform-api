@@ -1,6 +1,8 @@
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.db import db, Model
 from passlib.apps import custom_app_context as pwd_context
+from os import urandom
+from binascii import hexlify
 
 
 class User(Model, db.Model):
@@ -13,6 +15,7 @@ class User(Model, db.Model):
     # User authentication information
     email = db.Column(db.String, nullable=False, unique=True)
     password_hash = db.Column(db.String, nullable=False)
+    authentication_token = db.Column(db.String, nullable=False)
     _roles = db.relationship("UserRole")
     roles = association_proxy('_roles', 'role_name')
 
@@ -21,6 +24,11 @@ class User(Model, db.Model):
         'email',
         'roles'
     ]
+
+    def __init__(self, *args, **kwargs):
+        super(User, self).__init__(*args, **kwargs)
+        if not self.authentication_token:
+            self.new_authentication_token()
 
     @property
     def password(self):
@@ -35,6 +43,9 @@ class User(Model, db.Model):
 
     def fulfills_role(self, role):
         return role in self.roles
+
+    def new_authentication_token(self):
+        self.authentication_token = hexlify(urandom(16))
 
 
 class UserQuery(db.Query):

@@ -66,3 +66,6 @@ class TestCase(TC):
         self.json_post("api/v1/auth",
                        email="sam@example.com",
                        password="unsecure")
+
+    def user(self):
+        return User.query.filter_by(email="sam@example.com").first()

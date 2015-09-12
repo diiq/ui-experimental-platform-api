@@ -18,7 +18,6 @@ class TestCase(TC):
         app.config['TESTING'] = True
         app.signer = itsdangerous.URLSafeSerializer(
             "sosupersecretomgyoullneverguess")
-
         return app
 
     def setUp(self):
@@ -62,7 +61,7 @@ class TestCase(TC):
                 plant_seed_file_relative(seed_file)
 
     def login(self):
-        if not User.filter_by(email="sam@example.com"):
+        if not User.query.filter_by(email="sam@example.com"):
             plant_seed_file_relative("login_seeds.yaml")
         self.json_post("api/v1/auth",
                        email="sam@example.com",

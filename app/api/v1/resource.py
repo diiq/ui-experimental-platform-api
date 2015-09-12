@@ -5,7 +5,7 @@ import dateutil
 
 from lib.dictify import dictify
 from errors import with_translated_errors, ForbiddenError
-
+import authorization
 
 ##
 # Resource method decorators
@@ -77,3 +77,6 @@ class Resource(RESTResource):
     def parse_date(self, date_str):
         dt = dateutil.parser.parse(date_str, fuzzy=True)
         return dt.replace(tzinfo=dateutil.tz.tzutc())
+
+    def current_user(self):
+        return authorization.current_user()

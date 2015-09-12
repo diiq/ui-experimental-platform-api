@@ -1,9 +1,10 @@
 from flask import session
 
-from resource import Resource
+from resource import Resource, requires_role
 from errors import ForbiddenError
 from v1_api import api
 from app.models import User
+import authorization
 
 
 @api.resource("/api/v1/auth")
@@ -18,7 +19,16 @@ class AuthenticationResource(Resource):
     def delete(self):
         del session["current_user"]
 
-    def get(self):
+    def get(self, role):
+
         return {
-            "ok": "there"
+            'role': role,
+            'authorized': authorization.fulfills_role(role)
         }
+
+
+@api.resource("/api/v1/auth/me")
+class MeResource(Resource):
+    @requires_role("user")
+    def get(self):
+        return self.current_user()

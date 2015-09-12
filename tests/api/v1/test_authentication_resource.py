@@ -6,7 +6,7 @@ class AuthenticationResourseTests(TestCase):
 
     def test_successful_login(self):
         response = self.json_post(
-            "/api/v1/auth",
+            "api/v1/auth",
             email="sam@example.com",
             password="unsecure")
         self.assertEqual(response.status_code, 200)
@@ -24,3 +24,26 @@ class AuthenticationResourseTests(TestCase):
             email="steve@example.com",
             password="unsecure")
         self.assertEqual(response.status_code, 403)
+
+    def test_successful_role_check(self):
+        role = 'user'
+        self.login()
+        response = self.client.get(
+            "api/v1/auth",
+            query_string={'role': role})
+        self.assertEqual(response.json['role'], role)
+        self.assertEqual(response.json['authorized'], True)
+
+    def test_unsuccessful_role_check(self):
+        role = 'loser'
+        self.login()
+        response = self.client.get(
+            "api/v1/auth",
+            query_string={'role': role})
+        self.assertEqual(response.json['role'], role)
+        self.assertEqual(response.json['authorized'], False)
+
+    def test_me_resource(self):
+        self.login()
+        response = self.client.get("api/v1/auth/me")
+        self.assertEqual(response.json['email'], "sam@example.com")

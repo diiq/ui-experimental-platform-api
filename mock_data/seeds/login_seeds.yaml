@@ -2,3 +2,5 @@
     model: User
     email: sam@example.com
     password: unsecure
+    roles:
+    -  user

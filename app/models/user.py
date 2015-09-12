@@ -1,8 +1,10 @@
-from app.db import db
+from sqlalchemy.ext.associationproxy import association_proxy
+from app.db import db, Model
 from passlib.apps import custom_app_context as pwd_context
 
 
-class User(db.Model):
+class User(Model, db.Model):
+    __tablename__ = 'users'
     id = db.Column(
         db.Integer,
         db.Sequence('users_id_seq'),
@@ -11,7 +13,14 @@ class User(db.Model):
     # User authentication information
     email = db.Column(db.String, nullable=False, unique=True)
     password_hash = db.Column(db.String, nullable=False)
-    reset_password_token = db.Column(db.String)
+    _roles = db.relationship("UserRole")
+    roles = association_proxy('_roles', 'role_name')
+
+    public_attributes = [
+        'id',
+        'email',
+        'roles'
+    ]
 
     @property
     def password(self):
@@ -24,6 +33,9 @@ class User(db.Model):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
+    def fulfills_role(self, role):
+        return role in self.roles
+
 
 class UserQuery(db.Query):
     def authenticated(self, email, password):
@@ -33,3 +45,17 @@ class UserQuery(db.Query):
 
 
 User.query_class = UserQuery
+
+
+class UserRole(db.Model):
+    __tablename__ = 'user_roles'
+    id = db.Column(db.Integer,
+                   db.Sequence('user_roles_id_seq'),
+                   primary_key=True)
+    role_name = db.Column(db.String)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id", ondelete="CASCADE"))
+
+    def __init__(self, role_name):
+        self.role_name = role_name

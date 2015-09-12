@@ -1,5 +1,8 @@
 
-class ForbiddenError(StandardError):
+class ForbiddenError(Exception):
+    pass
+
+class BadInputError(Exception):
     pass
 
 
@@ -19,6 +22,7 @@ class ErrorTranslation(object):
 
 errors = [
     ErrorTranslation(ForbiddenError, 403),
+    ErrorTranslation(BadInputError, 422),
 ]
 
 
@@ -27,7 +31,7 @@ def with_translated_errors(f):
     def wrapper(*args, **kwargs):
         try:
             return f(*args, **kwargs)
-        except StandardError as e:
+        except Exception as e:
             print e
             for err in errors:
                 if err.applies(e):

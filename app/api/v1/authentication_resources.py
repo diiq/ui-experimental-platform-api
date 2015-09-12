@@ -20,7 +20,6 @@ class AuthenticationResource(Resource):
         del session["current_user"]
 
     def get(self, role):
-
         return {
             'role': role,
             'authorized': authorization.fulfills_role(role)

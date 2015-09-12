@@ -19,6 +19,7 @@ itsdangerous
 flask-cors==1.9.0
 decorator
 python-dateutil
+passlib
 
 # Development
 Flask-Script

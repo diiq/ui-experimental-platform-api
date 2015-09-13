@@ -2,6 +2,8 @@ import datetime
 
 from app.db import db, Model
 from participation import Participation
+from session import Session
+from record import Record
 
 
 class Experiment(Model, db.Model):
@@ -30,6 +32,18 @@ class Experiment(Model, db.Model):
         lazy="dynamic",
         passive_deletes=True,
         query_class=Participation.query_class)
+
+    sessions = db.relationship(
+        Session,
+        backref=db.backref("experiment"),
+        lazy="dynamic",
+        query_class=Session.query_class)
+
+    records = db.relationship(
+        Record,
+        backref=db.backref("experiment"),
+        lazy="dynamic",
+        query_class=Record.query_class)
 
     public_attributes = [
         'id',

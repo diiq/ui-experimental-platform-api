@@ -4,6 +4,10 @@ from app.db import db, Model
 from session import Session
 
 
+##
+# When a user decides to participate in an experiment, this is where
+# we store information about that relationship.
+#
 class Participation(Model, db.Model):
     __tablename__ = 'participations'
     id = db.Column(
@@ -28,6 +32,15 @@ class Participation(Model, db.Model):
         lazy="joined",
         passive_deletes=True,
         query_class=Session.query_class)
+
+    records = db.relationship(
+        "Record",
+        secondary="sessions",
+        primaryjoin="Session.participation_id == Participation.id",
+        secondaryjoin="Session.id == Record.session_id",
+        lazy="dynamic",
+        uselist=True,
+        viewonly=True)
 
     public_attributes = [
         'id',

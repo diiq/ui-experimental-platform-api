@@ -37,10 +37,10 @@ class Participation(Model, db.Model):
     ]
 
     def started(self):
-        return sessions_completed > 0
+        return self.sessions_completed > 0
 
     def complete(self):
-        return sessions_completed == self.experiment.session_count
+        return self.sessions_completed == self.experiment.session_count
 
 
 class ParticipationQuery(db.Query):

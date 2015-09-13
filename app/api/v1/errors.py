@@ -1,6 +1,6 @@
-
 class ForbiddenError(Exception):
     pass
+
 
 class BadInputError(Exception):
     pass

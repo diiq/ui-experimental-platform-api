@@ -1,4 +1,7 @@
+from experiment import Experiment
 from user import User
+from participation import Participation
+from session import Session
 
 import inspect
 import sys

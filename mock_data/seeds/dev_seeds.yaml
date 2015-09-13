@@ -4,3 +4,17 @@
     password: unsecure
     roles:
     -  user
+-
+    model: Experiment
+    title: "Reproduce Fitt's Law"
+    session_duration: 5
+    session_count: 1
+    slug: fitts-law
+    has_results: false
+-
+    model: Participation
+    user_id: 1
+    experiment_id: 1
+-
+    model: Session
+    participation_id: 1
